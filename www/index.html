@@ -20,15 +20,24 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
+<!--        <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
+-->
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<!--        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
+-->
+        <title>Voix des Anges</title>
+		
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBfPSVpzClpkXjmO7xLdarOPJEuGLBqrNw&sensor=false"></script>
+		<script type="text/javascript" src="js/json2.js"></script>
+		<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.1.0.min.js"></script>
+		<script type="text/javascript" src="js/geotracker.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.1.0.min.css" />
     </head>
     <body>
-        <div class="app">
+<!--        <div class="app">
             <h1>Apache Cordova</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
@@ -37,5 +46,26 @@
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
-    </body>
+-->
+		<div data-role="page" id="home">
+			<div data-role="header">
+				<h1>Home</h1>
+				
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-transition="none" data-icon="home">Home</a></li>
+						<li><a href="#startTracking" data-transition="none" data-icon="plus">Track Workout</a></li>
+						<li><a href="#history" data-transition="none" data-icon="star">History</a></li>
+					</ul>
+				</div>
+			</div>
+			
+			<div data-role="content">
+				<p>Welcome to the <em>GeoTracker</em> app. By clicking <em>Track Workout</em> you can record your workouts using the GPS feature on your phone.</p>
+				<button id="home_network_button" data-icon="check">Internet Access Enabled</button>
+				<button id="home_clearstorage_button">Clear local storage</button>
+				<button id="home_seedgps_button">Load Seed GPS Data</button>
+			</div>
+		</div>
+	</body>
 </html>
