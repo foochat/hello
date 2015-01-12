@@ -188,3 +188,13 @@ $('#track_info').live('pageshow', function(){
    
 		
 });
+
+$("#home_stream_button").live('click', function(){
+	try {
+		var myaudio = new Audio('http://streaming.rtbf.be:8000/2128xrtbf');
+		myaudio.id = 'playerAudio';
+		myaudio.play();
+	} catch (e) {
+		alert('no audio support!');
+	}
+});
