@@ -38,6 +38,7 @@ $("#startTracking_start").live('click', function(){
     	// Success
         function(position){
             tracking_data.push(position);
+			$("#startTracking_info").html('Latitude: ' + position.coords.latitude + '<br />' + 'Longitude: ' + position.coords.longitude + '<br />' + '<hr />');
         },
         
         // Error
@@ -189,11 +190,31 @@ $('#track_info').live('pageshow', function(){
 		
 });
 
+var myaudio = null;
+
 $("#home_stream_button").live('click', function(){
 	try {
-		var myaudio = new Audio('http://streaming.rtbf.be:8000/2128xrtbf');
-		myaudio.id = 'playerAudio';
-		myaudio.play();
+		if(myaudio == null)
+		{
+			myaudio = new Audio('http://streaming.rtbf.be:8000/2128xrtbf');
+			myaudio.id = 'playerAudio';
+			myaudio.play();
+		} 
+		else
+		{
+			if(myaudio.paused)
+			{
+				myaudio.play();
+				$(this).text('Listening to Classic 21')
+						.button('refresh');
+			}
+			else
+			{
+				myaudio.pause();
+				$(this).text('Listen to Classic 21')
+						.button('refresh');
+			}
+		}
 	} catch (e) {
 		alert('no audio support!');
 	}
