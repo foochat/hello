@@ -38,7 +38,7 @@ $("#startTracking_start").live('click', function(){
     	// Success
         function(position){
             tracking_data.push(position);
-			$("#startTracking_info").html('Latitude: ' + position.coords.latitude + '<br />' + 'Longitude: ' + position.coords.longitude + '<br />' + '<hr />');
+			$("#startTracking_info").html('Your last recorded position is :' + '<br />' + 'Latitude: ' + position.coords.latitude + '<br />' + 'Longitude: ' + position.coords.longitude + '<br />' + '<hr />');
         },
         
         // Error
