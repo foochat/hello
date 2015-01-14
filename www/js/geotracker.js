@@ -58,6 +58,7 @@ $("#startTracking_start").live('click', function(){
 				marker = new google.maps.Marker({
 					position: myLatLng,
 					map: liveMap,
+					icon: radio-on,
 					title: "Current Position"
 				});
 			}
