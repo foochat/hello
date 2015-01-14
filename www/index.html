@@ -58,7 +58,6 @@
 	
 		<button id="home_network_button" data-icon="check">Internet Access Enabled</button>
 		<button id="home_clearstorage_button">Clear local storage</button>
-		<button id="home_seedgps_button">Load Seed GPS Data</button>
 		<button id="home_stream_button">Listen to Classic 21</button>
 	</div>
 
@@ -90,7 +89,9 @@
 		<button data-role="button" id="startTracking_start">Start Tracking</button>
 		<button data-role="button" id="startTracking_stop">Stop Tracking</button>  
 		
-				<p id="startTracking_info"></p>
+		<p id="startTracking_info"></p>
+		<div id="livemap_canvas" style="position:absolute;margin-left:auto;
+  margin-right:auto;width:90%;height:50%;"></div>
 		
 		
 	</div>
@@ -142,7 +143,8 @@
 	<div data-role="content">	
 		<p id="track_info_info"></p>
 		
-		<div id="map_canvas" style="position:absolute;width:90%;height:50%;"></div>
+		<div id="map_canvas" style="position:absolute;margin-left:auto;
+  margin-right:auto;width:90%;height:50%;"></div>
 		
 	</div>
 

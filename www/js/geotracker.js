@@ -29,6 +29,9 @@ document.addEventListener("deviceready", function(){
 var track_id = '';      // Name/ID of the exercise
 var watch_id = null;    // ID of the geolocation
 var tracking_data = []; // Array containing GPS position objects
+var lastKnownPos = null;
+var liveMap = null;
+var marker = null;
 
 $("#startTracking_start").live('click', function(){
     
@@ -37,9 +40,44 @@ $("#startTracking_start").live('click', function(){
     
     	// Success
         function(position){
+			if(lastKnownPos == null) // create map & marker
+			{
+				var myLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				lastKnownPos = position;
+
+				// Google Map options
+				var myOptions = {
+					disableDefaultUI: true,
+					zoom: 15,
+					center: myLatLng,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+
+				// Create the Google Map, set options
+				liveMap = new google.maps.Map(document.getElementById("livemap_canvas"), myOptions);
+				marker = new google.maps.Marker({
+					position: myLatLng,
+					map: liveMap,
+					title: "Current Position"
+				});
+			}
+			else //update map
+			{
+				var myLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				lastKnownPos = position;
+				
+				liveMap.panTo(myLatLng);
+				
+				marker.setPosition(myLatLng);
+				
+			}
+			
+			
             tracking_data.push(position);
 			$("#startTracking_info").html('Your last recorded position is :' + '<br />' + 'Latitude: ' + position.coords.latitude + '<br />' + 'Longitude: ' + position.coords.longitude + '<br />' + '<hr />');
-        },
+        
+		
+		},
         
         // Error
         function(error){
@@ -79,11 +117,6 @@ $("#startTracking_stop").live('click', function(){
 
 $("#home_clearstorage_button").live('click', function(){
 	window.localStorage.clear();
-});
-
-$("#home_seedgps_button").live('click', function(){
-	window.localStorage.setItem('Sample block', '[{"timestamp":1335700802000,"coords":{"heading":null,"altitude":null,"longitude":170.33488333333335,"accuracy":0,"latitude":-45.87475166666666,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700803000,"coords":{"heading":null,"altitude":null,"longitude":170.33481666666665,"accuracy":0,"latitude":-45.87465,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700804000,"coords":{"heading":null,"altitude":null,"longitude":170.33426999999998,"accuracy":0,"latitude":-45.873708333333326,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700805000,"coords":{"heading":null,"altitude":null,"longitude":170.33318333333335,"accuracy":0,"latitude":-45.87178333333333,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700806000,"coords":{"heading":null,"altitude":null,"longitude":170.33416166666666,"accuracy":0,"latitude":-45.871478333333336,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700807000,"coords":{"heading":null,"altitude":null,"longitude":170.33526833333332,"accuracy":0,"latitude":-45.873394999999995,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700808000,"coords":{"heading":null,"altitude":null,"longitude":170.33427333333336,"accuracy":0,"latitude":-45.873711666666665,"speed":null,"altitudeAccuracy":null}},{"timestamp":1335700809000,"coords":{"heading":null,"altitude":null,"longitude":170.33488333333335,"accuracy":0,"latitude":-45.87475166666666,"speed":null,"altitudeAccuracy":null}}]');
-
 });
 
 // When the user views the history page
