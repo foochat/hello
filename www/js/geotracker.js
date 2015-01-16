@@ -15,16 +15,68 @@ function gps_distance(lat1, lon1, lat2, lon2)
     return d;
 }
 
+// The watch id references the current `watchAcceleration`
+var watchID = null;
+var socket = new io.connect();
+var ID;
+
 document.addEventListener("deviceready", function(){
-	
 	if(navigator.connection.type == Connection.NONE){
 		$("#home_network_button").text('No Internet Access')
 								 .attr("data-icon", "delete")
 								 .button('refresh');
 	}
+	
+	socket.on('connect', function(){
+	  socket.emit('init', 1);
+
+	  socket.on('ID', function(data){
+		ID = data;
+	  });
+
+	  socket.on('message', function(message){
+		//
+	  });
+
+	  socket.on('disconnect', function(){
+		//
+	  });
+
+	});
+	
+	startWatch();
 
 });
 
+// Start watching the acceleration
+function startWatch() {
+
+	// Update acceleration every 3 seconds
+	var options = { frequency: 1 };
+	watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
+}
+
+// Stop watching the acceleration
+function stopWatch() {
+	if (watchID) {
+		navigator.accelerometer.clearWatch(watchID);
+		watchID = null;
+	}
+}
+
+// onSuccess: Get a snapshot of the current acceleration
+function onSuccess(acceleration) {
+	send(acceleration.x, acceleration.y, acceleration.z);
+}
+// onError: Failed to get the acceleration
+function onError() {
+	alert('onError!');
+}
+
+function send(x, y, z){
+	var arr = [ID, x, y, z];
+	socket.emit('input', arr);
+}
 
 var track_id = '';      // Name/ID of the exercise
 var watch_id = null;    // ID of the geolocation
@@ -72,6 +124,12 @@ $("#startTracking_start").live('click', function(){
 				
 			}
 			
+//			jQuery.ajax({
+//				type: "POST", 
+//				url:  serviceURL+"locationUpdate.php", 
+//				data: 'x='+position.coords.longitude+'&y='+position.coords.latitude,
+//				cache: false
+//			});
 			
             tracking_data.push(position);
 			$("#startTracking_info").html('Your last recorded position is :' + '<br />' + 'Latitude: ' + position.coords.latitude + '<br />' + 'Longitude: ' + position.coords.longitude + '<br />' + '<hr />');
