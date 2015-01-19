@@ -75,9 +75,9 @@ function stopWatch() {
 
 // onSuccess: Get a snapshot of the current acceleration
 function onSuccess(acceleration) {
-	if(transmit){
+	//if(transmit){
 		send(acceleration.x, acceleration.y, acceleration.z);
-	}
+	//}
 }
 // onError: Failed to get the acceleration
 function onError() {
@@ -314,15 +314,15 @@ $("#home_radio_button").live('click', function(){
 });
 
 $("#home_accel_button").live('click', function(){
-	transmit != transmit;
-	if(transmit)
-	{
-		$(this).text('Transmitting')
-				.button('refresh');
-	}
-	else
-	{
-		$(this).text('Not Transmitting')
-				.button('refresh');
-	}
+//	transmit != transmit;
+//	if(transmit)
+//	{
+//		$(this).text('Transmitting')
+//				.button('refresh');
+//	}
+//	else
+//	{
+//		$(this).text('Not Transmitting')
+//				.button('refresh');
+//	}
 });
