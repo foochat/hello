@@ -76,7 +76,7 @@ function stopWatch() {
 // onSuccess: Get a snapshot of the current acceleration
 function onSuccess(acceleration) {
 	//if(transmit){
-		send(acceleration.x, acceleration.y, acceleration.z);
+		sendAccel(acceleration.x, acceleration.y, acceleration.z);
 	//}
 }
 // onError: Failed to get the acceleration
@@ -84,7 +84,7 @@ function onError() {
 	alert('onError!');
 }
 
-function send(x, y, z){
+function sendAccel(x, y, z){
 	var arr = [ID, x, y, z];
 	socket.emit('input', arr);
 }
