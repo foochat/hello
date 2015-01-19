@@ -15,10 +15,19 @@ function gps_distance(lat1, lon1, lat2, lon2)
     return d;
 }
 
+var track_id = '';      // Name/ID of the exercise
+var watch_id = null;    // ID of the geolocation
+var tracking_data = []; // Array containing GPS position objects
+var lastKnownPos = null;
+var liveMap = null;
+var marker = null;
+
 // The watch id references the current `watchAcceleration`
 var watchID = null;
 var socket = new io.connect('http://10.1.10.205:1234/');
 var ID;
+var transmit = false;
+var myaudio = null;
 
 document.addEventListener("deviceready", function(){
 	if(navigator.connection.type == Connection.NONE){
@@ -29,7 +38,6 @@ document.addEventListener("deviceready", function(){
 	
 	socket.on('connect', function(){
 		socket.emit('init', 1);
-		alert('on connect');
 
 		socket.on('ID', function(data){
 			ID = data;
@@ -67,7 +75,9 @@ function stopWatch() {
 
 // onSuccess: Get a snapshot of the current acceleration
 function onSuccess(acceleration) {
-	send(acceleration.x, acceleration.y, acceleration.z);
+	if(transmit){
+		send(acceleration.x, acceleration.y, acceleration.z);
+	}
 }
 // onError: Failed to get the acceleration
 function onError() {
@@ -78,13 +88,6 @@ function send(x, y, z){
 	var arr = [ID, x, y, z];
 	socket.emit('input', arr);
 }
-
-var track_id = '';      // Name/ID of the exercise
-var watch_id = null;    // ID of the geolocation
-var tracking_data = []; // Array containing GPS position objects
-var lastKnownPos = null;
-var liveMap = null;
-var marker = null;
 
 $("#startTracking_start").live('click', function(){
     
@@ -282,9 +285,7 @@ $('#track_info').live('pageshow', function(){
 		
 });
 
-var myaudio = null;
-
-$("#home_stream_button").live('click', function(){
+$("#home_radio_button").live('click', function(){
 	try {
 		if(myaudio == null)
 		{
@@ -309,5 +310,19 @@ $("#home_stream_button").live('click', function(){
 		}
 	} catch (e) {
 		alert('no audio support!');
+	}
+});
+
+$("#home_accel_button").live('click', function(){
+	transmit != transmit;
+	if(transmit)
+	{
+		$(this).text('Transmitting')
+				.button('refresh');
+	}
+	else
+	{
+		$(this).text('Not Transmitting')
+				.button('refresh');
 	}
 });
