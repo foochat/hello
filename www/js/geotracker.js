@@ -125,7 +125,7 @@ $("#startTracking_start").live('click', function(){
 				liveMap.panTo(myLatLng);
 				
 				marker.setPosition(myLatLng);
-				
+				sendAccel(position.coords.longitude, position.coords.latitude, position.coords.altitude);
 			}
 			
 //			jQuery.ajax({
