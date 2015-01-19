@@ -29,29 +29,29 @@ var ID;
 var transmit = false;
 var myaudio = null;
 
+socket.on('connect', function(){
+	socket.emit('init', 1);
+
+	socket.on('ID', function(data){
+		ID = data;
+		alert('Your ID is : ' + data);
+	});
+
+	socket.on('message', function(message){
+		alert(message);
+	});
+
+	socket.on('disconnect', function(){
+		//
+	});
+});
+
 document.addEventListener("deviceready", function(){
 	if(navigator.connection.type == Connection.NONE){
 		$("#home_network_button").text('No Internet Access')
 								 .attr("data-icon", "delete")
 								 .button('refresh');
 	}
-	
-	socket.on('connect', function(){
-		socket.emit('init', 1);
-
-		socket.on('ID', function(data){
-			ID = data;
-			alert('Your ID is : ' + data);
-		});
-
-		socket.on('message', function(message){
-			alert(message);
-		});
-
-		socket.on('disconnect', function(){
-			//
-		});
-	});
 	
 	startWatch();
 
