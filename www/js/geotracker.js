@@ -54,14 +54,14 @@ document.addEventListener("deviceready", function(){
 	}
 	
 	startWatch();
-
+	alert("Start Watch Running");
 });
 
 // Start watching the acceleration
 function startWatch() {
 
 	// Update acceleration every 3 seconds
-	var options = { frequency: 1 };
+	var options = { frequency: 3000 };
 	watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
 }
 
