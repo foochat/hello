@@ -33,10 +33,11 @@ document.addEventListener("deviceready", function(){
 
 		socket.on('ID', function(data){
 			ID = data;
+			alert('Your ID is : ' + data);
 		});
 
 		socket.on('message', function(message){
-			//
+			alert(message);
 		});
 
 		socket.on('disconnect', function(){

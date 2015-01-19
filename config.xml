@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.example.hello" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>HelloWorld</name>
+    <name>Voix des Anges</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Geolocation audio streaming.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="antonin.puleo@umons.ac.be">
+        Antonin Puleo
     </author>
     <content src="index.html" />
-    <access origin="http://10.1.10.205*" />
+    <access origin="http://10.1.10.205:1234*" />
 </widget>
