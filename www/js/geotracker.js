@@ -17,7 +17,7 @@ function gps_distance(lat1, lon1, lat2, lon2)
 
 // The watch id references the current `watchAcceleration`
 var watchID = null;
-var socket = new io.connect();
+var socket = new io.connect('http://10.1.10.205:1234');
 var ID;
 
 document.addEventListener("deviceready", function(){
