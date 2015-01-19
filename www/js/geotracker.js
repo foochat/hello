@@ -20,29 +20,29 @@ var watchID = null;
 var socket = new io.connect('http://10.1.10.205:1234');
 var ID;
 
-socket.on('connect', function(){
-	socket.emit('init', 1);
-	alert('on connect');
-
-	socket.on('ID', function(data){
-		ID = data;
-	});
-
-	socket.on('message', function(message){
-		//
-	});
-
-	socket.on('disconnect', function(){
-		//
-	});
-});
-
 document.addEventListener("deviceready", function(){
 	if(navigator.connection.type == Connection.NONE){
 		$("#home_network_button").text('No Internet Access')
 								 .attr("data-icon", "delete")
 								 .button('refresh');
 	}
+	
+	socket.on('connect', function(){
+		socket.emit('init', 1);
+		alert('on connect');
+
+		socket.on('ID', function(data){
+			ID = data;
+		});
+
+		socket.on('message', function(message){
+			//
+		});
+
+		socket.on('disconnect', function(){
+			//
+		});
+	});
 	
 	startWatch();
 

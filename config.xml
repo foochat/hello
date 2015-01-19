@@ -8,5 +8,5 @@
         Apache Cordova Team
     </author>
     <content src="index.html" />
-    <access origin="http://10.1.10.205:1234/*" />
+    <access origin="http://10.1.10.205*" />
 </widget>
