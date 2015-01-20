@@ -76,7 +76,7 @@ function stopWatch() {
 // onSuccess: Get a snapshot of the current acceleration
 function onSuccess(acceleration) {
 	//if(transmit){
-		sendAccel(acceleration.x, acceleration.y, acceleration.z);
+		send(acceleration.x, acceleration.y, acceleration.z);
 	//}
 }
 // onError: Failed to get the acceleration
@@ -84,7 +84,7 @@ function onError() {
 	alert('onError!');
 }
 
-function sendAccel(x, y, z){
+function send(x, y, z){
 	var arr = [ID, x, y, z];
 	socket.emit('input', arr);
 }
@@ -125,7 +125,7 @@ $("#startTracking_start").live('click', function(){
 				liveMap.panTo(myLatLng);
 				
 				marker.setPosition(myLatLng);
-				sendAccel(position.coords.longitude, position.coords.latitude, position.coords.altitude);
+				send(position.coords.latitude, position.coords.longitude, position.coords.altitude);
 			}
 			
 //			jQuery.ajax({
@@ -311,18 +311,4 @@ $("#home_radio_button").live('click', function(){
 	} catch (e) {
 		alert('no audio support!');
 	}
-});
-
-$("#home_accel_button").live('click', function(){
-//	transmit != transmit;
-//	if(transmit)
-//	{
-//		$(this).text('Transmitting')
-//				.button('refresh');
-//	}
-//	else
-//	{
-//		$(this).text('Not Transmitting')
-//				.button('refresh');
-//	}
 });
