@@ -289,7 +289,8 @@ $("#home_radio_button").live('click', function(){
 	try {
 		if(myaudio == null)
 		{
-			myaudio = new Audio('http://streaming.rtbf.be:8000/2128xrtbf');
+			//myaudio = new Audio('http://streaming.rtbf.be:8000/2128xrtbf');
+			myaudio = new Audio('http://10.1.10.205:8000/stream.ogg');
 			myaudio.id = 'playerAudio';
 			myaudio.play();
 		} 
