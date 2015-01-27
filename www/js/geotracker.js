@@ -24,10 +24,22 @@ var marker = null;
 
 // The watch id references the current `watchAcceleration`
 var watchID = null;
-var socket = new io.connect('http://10.1.10.205:1234/');
+var socket = new io.connect('http://10.1.10.135:1234/');
 var ID;
 var transmit = false;
 var myaudio = null;
+
+// stream via ffmpeg test
+var audioBuffer = null;
+var context = null;
+window.addEventListener('load', init, false);
+function init() {
+    try {
+        context = new webkitAudioContext();
+    } catch(e) {
+        alert('Web Audio API is not supported in this browser');
+    }
+}
 
 socket.on('connect', function(){
 	socket.emit('init', 1);
@@ -35,6 +47,25 @@ socket.on('connect', function(){
 	socket.on('ID', function(data){
 		ID = data;
 		alert('Your ID is : ' + data);
+	});
+	
+	socket.on('stream', function(data){
+		var d1 = base64DecToArr(data.data).buffer;
+		var d2 = new DataView(d1);
+
+		var data2 = new Float32Array(d2.byteLength / Float32Array.BYTES_PER_ELEMENT);
+		for (var jj = 0; jj < data2.length; ++jj)
+		{
+			data2[jj] = d2.getFloat32(jj * Float32Array.BYTES_PER_ELEMENT, true);
+		}
+
+		var audioBuffer = context.createBuffer(2, data2.length, 44100);
+		audioBuffer.getChannelData(0).set(data2);
+
+		var source = context.createBufferSource(); // creates a sound source
+		source.buffer = audioBuffer;
+		source.connect(context.destination); // connect the source to the context's destination (the speakers)
+		source.start(0);
 	});
 
 	socket.on('message', function(message){
@@ -290,7 +321,7 @@ $("#home_radio_button").live('click', function(){
 		if(myaudio == null)
 		{
 			//myaudio = new Audio('http://streaming.rtbf.be:8000/2128xrtbf');
-			myaudio = new Audio('http://10.1.10.205:8000/stream');
+			myaudio = new Audio('http://10.1.10.135:8000/stream');
 			myaudio.id = 'playerAudio';
 			myaudio.play();
 		} 
