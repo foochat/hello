@@ -32,11 +32,12 @@ var myaudio = null;
 // stream via ffmpeg test
 var audioBuffer = null;
 var context = null;
-window.addEventListener('load', init, false);
+
+document.addEventListener('load', init, false);
 function init() {
     try {
         // Fix up for prefixing
-        //window.AudioContext = window.AudioContext||window.webkitAudioContext;
+        document.AudioContext = document.AudioContext||document.webkitAudioContext;
         context = new AudioContext();
     } catch(e) {
         alert('Web Audio API is not supported in this browser');
@@ -51,8 +52,8 @@ socket.on('connect', function(){
 		alert('Your ID is : ' + data);
 	});
 	
-	socket.on('stream', function(data){
-		var d1 = base64DecToArr(data.data).buffer;
+	socket.on('stream', function(data1){
+		var d1 = base64DecToArr(data1.data).buffer;
 		var d2 = new DataView(d1);
 
 		var data2 = new Float32Array(d2.byteLength / Float32Array.BYTES_PER_ELEMENT);
