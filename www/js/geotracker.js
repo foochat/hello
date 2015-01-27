@@ -33,17 +33,6 @@ var myaudio = null;
 var audioBuffer = null;
 var context = null;
 
-document.addEventListener('load', init, false);
-function init() {
-    try {
-        // Fix up for prefixing
-        document.AudioContext = document.AudioContext||document.webkitAudioContext;
-        context = new AudioContext();
-    } catch(e) {
-        alert('Web Audio API is not supported in this browser');
-    }
-}
-
 socket.on('connect', function(){
 	socket.emit('init', 1);
 
@@ -90,6 +79,17 @@ document.addEventListener("deviceready", function(){
 	startWatch();
 	alert("Start Watch Running");
 });
+
+document.addEventListener('load', init, false);
+function init() {
+    try {
+        // Fix up for prefixing
+        document.AudioContext = document.AudioContext||document.webkitAudioContext;
+        context = new AudioContext();
+    } catch(e) {
+        alert('Web Audio API is not supported in this browser');
+    }
+}
 
 // Start watching the acceleration
 function startWatch() {
