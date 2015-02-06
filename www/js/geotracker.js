@@ -328,12 +328,12 @@ $("#home_radio_button").live('click', function(){
 	}
 });
 
-$("#home_login_button").live('click', hello('facebook').login(loginHandler));
-
-function loginHandler(auth){
-    hello(auth.network).api('me').then( function(json){
-        alert("You are signed in to Facebook as " + json.name);
-    }, function( e ){
-        alert("Signin error: " + e.error.message );
-    });
-}
+//$("#home_login_button").live('click', hello('facebook').login(loginHandler));
+//
+//function loginHandler(auth){
+//    hello(auth.network).api('me').then( function(json){
+//        alert("You are signed in to Facebook as " + json.name);
+//    }, function( e ){
+//        alert("Signin error: " + e.error.message );
+//    });
+//}
