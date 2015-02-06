@@ -55,7 +55,16 @@ document.addEventListener("deviceready", function(){
 								 .attr("data-icon", "delete")
 								 .button('refresh');
 	}
-	
+	// Initiate the library
+    hello.init({
+        facebook : '641306486015780'
+    }, {
+        //
+        // Define the OAuth2 return URL
+        // This can be anything you like, providing its the callback which you have registered with the providers for OAuth2
+        // It could even be localhost, e.g. http://localhost/somepath as phonegap is not run from a domain so SameOrigin breaks, instead we take advantage of being able to read the popups URL in PhoneGap
+        redirect_uri : 'http://adodson.com/hello.js/redirect.html'
+    });
 	startWatch();
 });
 
@@ -317,17 +326,6 @@ $("#home_radio_button").live('click', function(){
 	} catch (e) {
 		alert('no audio support!');
 	}
-});
-
-// Initate the library
-hello.init({
-    facebook : '641306486015780'
-}, {
-    //
-    // Define the OAuth2 return URL
-    // This can be anything you like, providing its the callback which you have registered with the providers for OAuth2
-    // It could even be localhost, e.g. http://localhost/somepath as phonegap is not run from a domain so SameOrigin breaks, instead we take advantage of being able to read the popups URL in PhoneGap
-    redirect_uri : 'http://adodson.com/hello.js/redirect.html'
 });
 
 $("#home_login_button").live('click', hello('facebook').login(loginHandler));

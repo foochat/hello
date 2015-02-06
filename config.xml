@@ -8,5 +8,5 @@
         Antonin Puleo
     </author>
     <content src="index.html" />
-    <access origin="*" />
+    <access origin="http://10.1.10.135:1234/" />
 </widget>
