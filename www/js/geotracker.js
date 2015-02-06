@@ -22,15 +22,16 @@ var lastKnownPos = null;
 var liveMap = null;
 var marker = null;
 
-var audioAddress = 'http://10.1.10.135:8000/stream';
-var serverAddress = 'http://10.1.10.135:1234/';
-
 // The watch id references the current `watchAcceleration`
 var watchID = null;
-var socket = new io.connect(serverAddress);
+var socket = new io.connect('http://10.1.10.135:1234/');
 var ID;
 var transmit = false;
 var myaudio = null;
+
+// stream via ffmpeg test
+var audioBuffer = null;
+var context = null;
 
 socket.on('connect', function(){
 	socket.emit('init', 1);
@@ -38,6 +39,25 @@ socket.on('connect', function(){
 	socket.on('ID', function(data){
 		ID = data;
 		alert('Your ID is : ' + data);
+	});
+	
+	socket.on('stream', function(data1){
+		var d1 = base64DecToArr(data1.data).buffer;
+		var d2 = new DataView(d1);
+
+		var data2 = new Float32Array(d2.byteLength / Float32Array.BYTES_PER_ELEMENT);
+		for (var jj = 0; jj < data2.length; ++jj)
+		{
+			data2[jj] = d2.getFloat32(jj * Float32Array.BYTES_PER_ELEMENT, true);
+		}
+
+		var audioBuffer = context.createBuffer(2, data2.length, 44100);
+		audioBuffer.getChannelData(0).set(data2);
+
+		var source = context.createBufferSource(); // creates a sound source
+		source.buffer = audioBuffer;
+		source.connect(context.destination); // connect the source to the context's destination (the speakers)
+		source.start(0);
 	});
 
 	socket.on('message', function(message){
@@ -66,7 +86,19 @@ document.addEventListener("deviceready", function(){
 //        redirect_uri : 'http://adodson.com/hello.js/redirect.html'
 //    });
 	startWatch();
+	alert("Start Watch Running");
 });
+
+document.addEventListener('load', init, false);
+function init() {
+    try {
+        // Fix up for prefixing
+        document.AudioContext = document.AudioContext||document.webkitAudioContext;
+        context = new AudioContext();
+    } catch(e) {
+        alert('Web Audio API is not supported in this browser');
+    }
+}
 
 // Start watching the acceleration
 function startWatch() {
@@ -300,25 +332,22 @@ $("#home_radio_button").live('click', function(){
 	try {
 		if(myaudio == null)
 		{
-			myaudio = new Audio(audioAddress);
+			//myaudio = new Audio('http://streaming.rtbf.be:8000/2128xrtbf');
+			myaudio = new Audio('http://10.1.10.135:8000/stream');
 			myaudio.id = 'playerAudio';
 			myaudio.play();
-            $(this).text('Listening to Classic 21')
-						.button('refresh');
 		} 
 		else
 		{
 			if(myaudio.paused)
 			{
-                myaudio = new Audio(audioAddress);
-                myaudio.play();
+				myaudio.play();
 				$(this).text('Listening to Classic 21')
 						.button('refresh');
 			}
 			else
 			{
 				myaudio.pause();
-                myaudio = null;
 				$(this).text('Listen to Classic 21')
 						.button('refresh');
 			}
