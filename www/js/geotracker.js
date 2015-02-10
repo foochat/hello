@@ -116,7 +116,7 @@ function startListening(id) {
         myaudio = null;
         var port = 8000 + 2*id;
         var portStr = ":" + port;
-        myaudio = new Audio(audioAddress + ":" + portStr + "/stream");
+        myaudio = new Audio(audioAddress + portStr + "/stream");
         myaudio.play();
     } catch (e) {
         alert('No audio support!');
