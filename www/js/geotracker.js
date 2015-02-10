@@ -5,7 +5,7 @@ var lastKnownPos = null;
 var liveMap = null;
 var marker = null;
 
-var audioAddress = 'http://10.1.10.135:8000/stream';
+var audioAddress = 'http://10.1.10.135';
 var serverAddress = 'http://10.1.10.135:1234/';
 
 var socket = new io.connect(serverAddress);
@@ -114,7 +114,9 @@ function startTracking(){
 function startListening(id) {
     try {
         myaudio = null;
-        myaudio = new Audio(audioAddress+id);
+        var port = 8000 + 2*id;
+        var portStr = ":" + port;
+        myaudio = new Audio(audioAddress + portStr + "/stream");
         myaudio.play();
     } catch (e) {
         alert('No audio support!');
