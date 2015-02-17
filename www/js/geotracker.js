@@ -113,10 +113,15 @@ function startTracking(){
 
 function startListening(id) {
     try {
-        myaudio = null;
+        if(myaudio != null)
+        {
+            myaudio.stop();
+            myaudio.release();
+            myaudio = null;
+        }
         var port = 8000 + 2*id;
         var portStr = ":" + port;
-        myaudio = new Audio(audioAddress + portStr + "/stream");
+        myaudio = new Media(audioAddress + portStr + "/stream");
         myaudio.play();
     } catch (e) {
         alert('No audio support!');
