@@ -125,6 +125,10 @@ function startListening(id) {
 	}
 }
 
+$("#home_radio_button").live('click', function(){
+    startListening(0);
+});
+
 //$("#home_login_button").live('click', hello('facebook').login(loginHandler));
 //
 //function loginHandler(auth){
