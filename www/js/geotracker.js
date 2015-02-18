@@ -19,7 +19,9 @@ socket.on('connect', function(){
 		ID = data;
         $("#startTracking_status").html("Welcome to <em>Voix des Anges</em> <strong>Client " + ID + "</strong> !");
         startTracking();
-        startListening(ID);
+        setTimeout(function(){
+            startListening(ID);
+        }, 10000);
 	});
 
 	socket.on('message', function(message){
