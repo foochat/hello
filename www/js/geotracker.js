@@ -9,7 +9,7 @@ var audioAddress = 'http://10.1.10.135';
 var serverAddress = 'http://10.1.10.135:1234/';
 
 var socket = new io.connect(serverAddress);
-var ID;
+var ID = null;
 var myaudio = null;
 
 socket.on('connect', function(){
@@ -117,8 +117,8 @@ function startListening(id) {
     try {
         myaudio = null;
         var port = 8000 + 2*id;
-        var portStr = ":" + port;
-        myaudio = new Audio(audioAddress + portStr + "/stream");
+        var url = audioAddress + ":" + port + "/stream";
+        myaudio = new Audio(url);
         myaudio.play();
     } catch (e) {
         alert('No audio support!');
