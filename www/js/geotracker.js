@@ -9,8 +9,9 @@ var audioAddress = 'http://10.1.10.135';
 var serverAddress = 'http://10.1.10.135:1234/';
 
 var socket = new io.connect(serverAddress);
-var ID = 0;
+var ID = null;
 var myaudio = null;
+var lastUpdate = null;
 
 socket.on('connect', function(){
 	socket.emit('init', 1);
@@ -19,13 +20,18 @@ socket.on('connect', function(){
 		ID = data;
         $("#startTracking_status").html("Welcome to <em>Voix des Anges</em> <strong>Client " + ID + "</strong> !");
         startTracking();
-        setTimeout(function(){
-            startListening(0);
-        }, 15000);
 	});
 
 	socket.on('message', function(message){
 		alert(message);
+	});
+    
+    socket.on('updated', function(id){
+        if(lastUpdate == null)
+        {
+            startListening(ID);
+            lastUpdate = 1;
+        }
 	});
 
 	socket.on('disconnect', function(){
@@ -42,6 +48,8 @@ socket.on('connect', function(){
         // Reset watch_id and tracking_data 
         watch_id = null;
         //tracking_data = [];
+        
+        lastUpdate = null;
 	});
 });
 
