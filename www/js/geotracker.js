@@ -21,7 +21,7 @@ socket.on('connect', function(){
         startTracking();
         setTimeout(function(){
             startListening(ID);
-        }, 10000);
+        }, 15000);
 	});
 
 	socket.on('message', function(message){
