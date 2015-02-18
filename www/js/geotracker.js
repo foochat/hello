@@ -9,7 +9,7 @@ var audioAddress = 'http://10.1.10.135';
 var serverAddress = 'http://10.1.10.135:1234/';
 
 var socket = new io.connect(serverAddress);
-var ID = null;
+var ID = 0;
 var myaudio = null;
 
 socket.on('connect', function(){
