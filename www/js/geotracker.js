@@ -20,7 +20,7 @@ socket.on('connect', function(){
         $("#startTracking_status").html("Welcome to <em>Voix des Anges</em> <strong>Client " + ID + "</strong> !");
         startTracking();
         setTimeout(function(){
-            startListening(ID);
+            startListening(0);
         }, 15000);
 	});
 
