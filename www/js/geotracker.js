@@ -128,7 +128,8 @@ function startListening(id) {
         myaudio = new Audio(url);
         myaudio.autoplay = true;
         myaudio.addEventListener("canplay", function() {
-            myaudio.play();
+            //myaudio.play();
+            $("#radio_status").html('Playing' + '<br />');
             var logAudio = ' ';
             for (property in myaudio) {
               logAudio += property + ':' + myaudio[property]+'\n';
