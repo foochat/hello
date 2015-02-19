@@ -13,23 +13,6 @@ var ID = null;
 var myaudio = null;
 var lastUpdate = null;
 
-function startListening(id) {
-    try {
-        if(myaudio != null)
-        {
-            myaudio.pause();
-            myaudio = null;
-        }
-        var port = 8000 + 2*id;
-        var url = audioAddress + ":" + port + "/stream";
-        myaudio = new Audio(url);
-        myaudio.play();
-    } catch (e) {
-        alert('No audio support!');
-        socket.emit('log', [ID, "Error in startListening: " + e]);
-	}
-}
-
 socket.on('connect', function(){
 	socket.emit('init', 1);
 
@@ -133,8 +116,26 @@ function startTracking(){
         { frequency: 1000, enableHighAccuracy: true });
 }
 
+function startListening(id) {
+    try {
+        if(myaudio != null)
+        {
+            myaudio.pause();
+            myaudio = null;
+        }
+        var port = 8000 + 2*id;
+        var url = audioAddress + ":" + port + "/stream";
+        myaudio = new Audio(url);
+        socket.emit('log', [ID, "Audio: " + myaudio]);
+        myaudio.play();
+    } catch (e) {
+        alert('Audio error : ' + e);
+        socket.emit('log', [ID, "Error in startListening: " + e]);
+	}
+}
+
 $("#home_radio_button").live('click', function(){
-    startListening(0);
+    startListening(ID);
 });
 
 //$("#home_login_button").live('click', hello('facebook').login(loginHandler));
