@@ -126,20 +126,17 @@ function startListening(id) {
         var port = 8000 + 2*id;
         var url = audioAddress + ":" + port + "/stream";
         myaudio = new Audio(url);
-        myaudio.play();
-        myaudio.onerror = function(e) {
-            alert(myaudio.error.code == myaudio.error.MEDIA_ERR_SRC_NOT_SUPPORTED);
-            if(myaudio.networkState == myaudio.NETWORK_NO_SOURCE)
-            {
-                myaudio.src = url;
-                myaudio.play();
+        myaudio.addEventListener("canplay", function() {
+            myaudio.play();
+            var logAudio = ' ';
+            for (property in myaudio) {
+              logAudio += property + ':' + myaudio[property]+'\n';
             }
             socket.emit('log', [ID, "Audio: " + logAudio ]);
-        };
+        });
         var logAudio = ' ';
         for (property in myaudio) {
           logAudio += property + ':' + myaudio[property]+'\n';
-
         }
         socket.emit('log', [ID, "Audio: " + logAudio ]);
     } catch (e) {
