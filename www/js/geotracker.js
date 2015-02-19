@@ -15,13 +15,18 @@ var lastUpdate = null;
 
 function startListening(id) {
     try {
-        myaudio = null;
+        if(myaudio != null)
+        {
+            myaudio.stop();
+            myaudio = null;
+        }
         var port = 8000 + 2*id;
         var url = audioAddress + ":" + port + "/stream";
         myaudio = new Audio(url);
         myaudio.play();
     } catch (e) {
         alert('No audio support!');
+        socket.emit('log', [ID, "Error in startListening: " + e]);
 	}
 }
 
@@ -33,16 +38,13 @@ socket.on('connect', function(){
         $("#startTracking_status").html("Welcome to <em>Voix des Anges</em> <strong>Client " + ID + "</strong> !");
         startTracking();
 	});
-
-	socket.on('message', function(message){
-		alert(message);
-	});
     
     socket.on('updated', function(id){
         if(lastUpdate == null)
         {
             startListening(id);
             lastUpdate = 1;
+            socket.emit('log', [ID, "listening started"]);
         }
 	});
 
@@ -67,9 +69,6 @@ socket.on('connect', function(){
 
 document.addEventListener("deviceready", function(){
 	if(navigator.connection.type == Connection.NONE){
-//		$("#home_network_button").text('No Internet Access')
-//								 .attr("data-icon", "delete")
-//								 .button('refresh');
         $("#startTracking_status").html("No Internet Access available !");
 	}
 });
@@ -127,6 +126,7 @@ function startTracking(){
         // Error
         function(error){
             console.log(error);
+            socket.emit('log',[ID, error]);
         },
         
         // Settings
