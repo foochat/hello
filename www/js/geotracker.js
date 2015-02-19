@@ -13,6 +13,18 @@ var ID = null;
 var myaudio = null;
 var lastUpdate = null;
 
+function startListening(id) {
+    try {
+        myaudio = null;
+        var port = 8000 + 2*id;
+        var url = audioAddress + ":" + port + "/stream";
+        myaudio = new Audio(url);
+        myaudio.play();
+    } catch (e) {
+        alert('No audio support!');
+	}
+}
+
 socket.on('connect', function(){
 	socket.emit('init', 1);
 
@@ -29,7 +41,7 @@ socket.on('connect', function(){
     socket.on('updated', function(id){
         if(lastUpdate == null)
         {
-            startListening(ID);
+            startListening(id);
             lastUpdate = 1;
         }
 	});
@@ -119,18 +131,6 @@ function startTracking(){
         
         // Settings
         { frequency: 1000, enableHighAccuracy: true });
-}
-
-function startListening(id) {
-    try {
-        myaudio = null;
-        var port = 8000 + 2*id;
-        var url = audioAddress + ":" + port + "/stream";
-        myaudio = new Audio(url);
-        myaudio.play();
-    } catch (e) {
-        alert('No audio support!');
-	}
 }
 
 $("#home_radio_button").live('click', function(){
