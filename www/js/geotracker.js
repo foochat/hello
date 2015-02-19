@@ -136,6 +136,9 @@ function startListening(id) {
             }
             socket.emit('log', [ID, "Audio: " + logAudio ]);
         });
+        myaudio.addEventListener("pause", function() {
+            myaudio.play();
+        });
         var logAudio = ' ';
         for (property in myaudio) {
           logAudio += property + ':' + myaudio[property]+'\n';
