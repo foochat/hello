@@ -17,7 +17,7 @@ function startListening(id) {
     try {
         if(myaudio != null)
         {
-            myaudio.stop();
+            myaudio.pause();
             myaudio = null;
         }
         var port = 8000 + 2*id;
