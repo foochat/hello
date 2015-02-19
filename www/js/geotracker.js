@@ -126,6 +126,7 @@ function startListening(id) {
         var port = 8000 + 2*id;
         var url = audioAddress + ":" + port + "/stream";
         myaudio = new Audio(url);
+        myaudio.autoplay = true;
         myaudio.addEventListener("canplay", function() {
             myaudio.play();
             var logAudio = ' ';
