@@ -147,7 +147,12 @@ function startListening(id) {
                break;
            }
          }, true);
-        socket.emit('log', [ID, "Audio: " + myaudio.src]);
+        var logAudio = ' ';
+        for (property in myaudio) {
+          logAudio += property + ':' + myaudio[property]+'; ';
+
+        }
+        socket.emit('log', [ID, "Audio: " + logAudio ]);
         myaudio.play();
     } catch (e) {
         alert('Audio error : ' + e);
