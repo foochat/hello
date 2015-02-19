@@ -126,34 +126,22 @@ function startListening(id) {
         var port = 8000 + 2*id;
         var url = audioAddress + ":" + port + "/stream";
         myaudio = new Audio(url);
-        myaudio.addEventListener('error', function failed(e) {
-           // audio playback failed - show a message saying why
-           // to get the source of the audio element use $(this).src
-           switch (e.target.error.code) {
-             case e.target.error.MEDIA_ERR_ABORTED:
-               alert('You aborted the video playback.');
-               break;
-             case e.target.error.MEDIA_ERR_NETWORK:
-               alert('A network error caused the audio download to fail.');
-               break;
-             case e.target.error.MEDIA_ERR_DECODE:
-               alert('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
-               break;
-             case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-               alert('The video audio not be loaded, either because the server or network failed or because the format is not supported.');
-               break;
-             default:
-               alert('An unknown error occurred.');
-               break;
-           }
-         }, true);
+        myaudio.play();
+        myaudio.onerror = function(e) {
+            alert(myaudio.error.code == myaudio.error.MEDIA_ERR_SRC_NOT_SUPPORTED);
+            if(myaudio.networkState == myaudio.NETWORK_NO_SOURCE)
+            {
+                myaudio.src = url;
+                myaudio.play();
+            }
+            socket.emit('log', [ID, "Audio: " + logAudio ]);
+        };
         var logAudio = ' ';
         for (property in myaudio) {
-          logAudio += property + ':' + myaudio[property]+'; ';
+          logAudio += property + ':' + myaudio[property]+'\n';
 
         }
         socket.emit('log', [ID, "Audio: " + logAudio ]);
-        myaudio.play();
     } catch (e) {
         alert('Audio error : ' + e);
         socket.emit('log', [ID, "Error in startListening: " + e]);
