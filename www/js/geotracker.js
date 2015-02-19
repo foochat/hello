@@ -147,7 +147,7 @@ function startListening(id) {
                break;
            }
          }, true);
-        socket.emit('log', [ID, "Audio: " + JSON.stringify(myaudio)]);
+        socket.emit('log', [ID, "Audio: " + myaudio.src]);
         myaudio.play();
     } catch (e) {
         alert('Audio error : ' + e);
