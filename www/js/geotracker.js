@@ -120,7 +120,7 @@ function startListening(id) {
     try {
         if(myaudio != null)
         {
-            //myaudio.pause();
+            myaudio.pause();
             myaudio = null;
         }
         var port = 8000 + 2*id;
@@ -136,14 +136,9 @@ function startListening(id) {
             }
             socket.emit('log', [ID, "Audio: " + logAudio ]);
         });
-        myaudio.addEventListener("pause", function() {
+        setTimeout(function() {
             myaudio.play();
-        });
-        var logAudio = ' ';
-        for (property in myaudio) {
-          logAudio += property + ':' + myaudio[property]+'\n';
-        }
-        socket.emit('log', [ID, "Audio: " + logAudio ]);
+        }, 5000);
     } catch (e) {
         alert('Audio error : ' + e);
         socket.emit('log', [ID, "Error in startListening: " + e]);
