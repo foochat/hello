@@ -122,7 +122,8 @@ function startListening(id) {
         var url = audioAddress + ":" + port + "/stream";
         if(myaudio == null)
         {
-            myaudio = new Audio(url);
+            //myaudio = new Audio(url);
+            myaudio = document.getElementById("webradio");
             myaudio.autoplay = true;
             myaudio.load();
             myaudio.play();
@@ -137,7 +138,8 @@ function startListening(id) {
             {
                 myaudio.pause();
                 myaudio = null;
-                myaudio = new Audio(url);
+                //myaudio = new Audio(url);
+                myaudio = document.getElementById("webradio");
                 myaudio.autoplay = true;
                 myaudio.load();
                 myaudio.play();
