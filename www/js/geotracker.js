@@ -120,7 +120,7 @@ function startListening(id) {
     try {
         if(myaudio != null)
         {
-            myaudio.pause();
+            //myaudio.pause();
             myaudio = null;
         }
         var port = 8000 + 2*id;
@@ -128,7 +128,7 @@ function startListening(id) {
         myaudio = new Audio(url);
         myaudio.autoplay = true;
         myaudio.addEventListener("canplay", function() {
-            //myaudio.play();
+            myaudio.play();
             $("#radio_status").html('Playing' + '<br />');
             var logAudio = ' ';
             for (property in myaudio) {
