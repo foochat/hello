@@ -127,6 +127,10 @@ function startListening(id) {
         var url = audioAddress + ":" + port + "/stream";
         myaudio = new Audio(url);
         myaudio.autoplay = true;
+        myaudio.play();
+        setInterval(function() {
+            myaudio.play();
+        }, 1000);
         myaudio.addEventListener("canplay", function() {
             myaudio.play();
             $("#radio_status").html('Playing' + '<br />');
@@ -136,9 +140,6 @@ function startListening(id) {
             }
             socket.emit('log', [ID, "Audio: " + logAudio ]);
         });
-        setTimeout(function() {
-            myaudio.play();
-        }, 5000);
     } catch (e) {
         alert('Audio error : ' + e);
         socket.emit('log', [ID, "Error in startListening: " + e]);
