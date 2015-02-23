@@ -124,7 +124,7 @@ function startListening(id) {
         {
             //myaudio = new Audio(url);
             myaudio = document.getElementById("webradio");
-            myaudio.src(url);
+            myaudio.src = url;
             myaudio.autoplay = true;
             myaudio.load();
             myaudio.play();
@@ -141,7 +141,7 @@ function startListening(id) {
                 myaudio = null;
                 //myaudio = new Audio(url);
                 myaudio = document.getElementById("webradio");
-                myaudio.src(url);
+                myaudio.src = url;
                 myaudio.autoplay = true;
                 myaudio.load();
                 myaudio.play();
