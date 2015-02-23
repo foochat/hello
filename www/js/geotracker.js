@@ -124,6 +124,7 @@ function startListening(id) {
         {
             myaudio = new Audio(url);
             myaudio.autoplay = true;
+            myaudio.load();
             myaudio.play();
         }
         else
@@ -138,6 +139,7 @@ function startListening(id) {
                 myaudio = null;
                 myaudio = new Audio(url);
                 myaudio.autoplay = true;
+                myaudio.load();
                 myaudio.play();
             }
         }
