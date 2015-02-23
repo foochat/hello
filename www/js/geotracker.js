@@ -118,28 +118,38 @@ function startTracking(){
 
 function startListening(id) {
     try {
-        if(myaudio != null)
-        {
-            //myaudio.pause();
-            myaudio = null;
-        }
         var port = 8000 + 2*id;
         var url = audioAddress + ":" + port + "/stream";
-        myaudio = new Audio(url);
-        myaudio.autoplay = true;
-        myaudio.play();
-        setInterval(function() {
+        if(myaudio == null)
+        {
+            myaudio = new Audio(url);
+            myaudio.autoplay = true;
             myaudio.play();
-        }, 1000);
-        myaudio.addEventListener("canplay", function() {
-            myaudio.play();
-            $("#radio_status").html('Playing' + '<br />');
-            var logAudio = ' ';
-            for (property in myaudio) {
-              logAudio += property + ':' + myaudio[property]+'\n';
+        }
+        else
+        {
+            if(myaudio.paused)
+            {
+                myaudio.play();
             }
-            socket.emit('log', [ID, "Audio: " + logAudio ]);
-        });
+            else
+            {
+                myaudio.pause();
+                myaudio = null;
+                myaudio = new Audio(url);
+                myaudio.autoplay = true;
+                myaudio.play();
+            }
+        }
+//        myaudio.addEventListener("canplay", function() {
+//            myaudio.play();
+//            $("#radio_status").html('Playing' + '<br />');
+//            var logAudio = ' ';
+//            for (property in myaudio) {
+//              logAudio += property + ':' + myaudio[property]+'\n';
+//            }
+//            socket.emit('log', [ID, "Audio: " + logAudio ]);
+//        });
     } catch (e) {
         alert('Audio error : ' + e);
         socket.emit('log', [ID, "Error in startListening: " + e]);
