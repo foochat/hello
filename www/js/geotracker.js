@@ -113,26 +113,14 @@ function reloadAudio(url) {
     myaudio = new Audio(url);
     myaudio.autoplay = true;
     myaudio.load();
-    myaudio.addEventListener('play', function(){animatePlayer(true);
-                               socket.emit('log',[ID, "onplay"]);});
-    //myaudio.onplay = function(){animatePlayer(true);
-    //                           socket.emit('log',[ID, "onplay"]);};
-    myaudio.oncanplay = function(){animatePlayer(false);
-                                  socket.emit('log',[ID, "oncanplay"]);};
-    myaudio.onstalled = function(){animatePlayer(false);
-                                  socket.emit('log',[ID, "onstalled"]);};
-    myaudio.onpause = function(){animatePlayer(false);
-                                socket.emit('log',[ID, "onpause"]);};
-    myaudio.onerror = function(){animatePlayer(false);
-                                socket.emit('log',[ID, "onerror"]);};
-    myaudio.onratechange = function(){animatePlayer(false);
-                                     socket.emit('log',[ID, "onratechange"]);};
-    myaudio.onsuspend = function(){animatePlayer(false);
-                                  socket.emit('log',[ID, "onsuspend"]);};
-    myaudio.onwaiting = function(){animatePlayer(false);
-                                  socket.emit('log',[ID, "onwaiting"]);};
-    myaudio.onended = function(){animatePlayer(false);
-                                socket.emit('log',[ID, "onended"]);};
+    myaudio.addEventListener('play', function(){animatePlayer(true);});
+    myaudio.addEventListener('canplay', function(){animatePlayer(false);});
+    myaudio.addEventListener('stalled', function(){animatePlayer(false);});
+    myaudio.addEventListener('pause', function(){animatePlayer(false);});
+    myaudio.addEventListener('error', function(){animatePlayer(false);});
+    myaudio.addEventListener('suspend', function(){animatePlayer(false);});
+    myaudio.addEventListener('waiting', function(){animatePlayer(false);});
+    myaudio.addEventListener('ended', function(){animatePlayer(false);});
 }
 
 function animatePlayer(state) {
