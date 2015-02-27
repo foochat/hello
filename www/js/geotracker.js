@@ -113,15 +113,24 @@ function reloadAudio(url) {
     myaudio = new Audio(url);
     myaudio.autoplay = true;
     myaudio.load();
-    myaudio.onplay = function(){animatePlayer(true);};
-    myaudio.oncanplay = function(){animatePlayer(false);};
-    myaudio.onstalled = function(){animatePlayer(false);};
-    myaudio.onpause = function(){animatePlayer(false);};
-    myaudio.onerror = function(){animatePlayer(false);};
-    myaudio.onratechange = function(){animatePlayer(false);};
-    myaudio.onsuspend = function(){animatePlayer(false);};
-    myaudio.onwaiting = function(){animatePlayer(false);};
-    myaudio.onended = function(){animatePlayer(false);};
+    myaudio.onplay = function(){animatePlayer(true);
+                               socket.emit('log',[ID, "onplay"]);};
+    myaudio.oncanplay = function(){animatePlayer(false);
+                                  socket.emit('log',[ID, "oncanplay"]);};
+    myaudio.onstalled = function(){animatePlayer(false);
+                                  socket.emit('log',[ID, "onstalled"]);};
+    myaudio.onpause = function(){animatePlayer(false);
+                                socket.emit('log',[ID, "onpause"]);};
+    myaudio.onerror = function(){animatePlayer(false);
+                                socket.emit('log',[ID, "onerror"]);};
+    myaudio.onratechange = function(){animatePlayer(false);
+                                     socket.emit('log',[ID, "onratechange"]);};
+    myaudio.onsuspend = function(){animatePlayer(false);
+                                  socket.emit('log',[ID, "onsuspend"]);};
+    myaudio.onwaiting = function(){animatePlayer(false);
+                                  socket.emit('log',[ID, "onwaiting"]);};
+    myaudio.onended = function(){animatePlayer(false);
+                                socket.emit('log',[ID, "onended"]);};
 }
 
 function animatePlayer(state) {
