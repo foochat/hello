@@ -1,63 +1,49 @@
+var serverAddress = 'http://10.1.10.135';
+var serverPort = 1234;
+var mountpoint = "/stream";
+
+var socket = new io.connect(serverAddress + ':' + serverPort + '/');
+
 var track_id = '';      // Name/ID of the exercise
 var watch_id = null;    // ID of the geolocation
 //var tracking_data = []; // Array containing GPS position objects
-var lastKnownPos = null;
-var liveMap = null;
-var marker = null;
-
-var audioAddress = 'http://10.1.10.135';
-var serverAddress = 'http://10.1.10.135:1234/';
-
-var socket = new io.connect(serverAddress);
 var ID = null;
 var myaudio = null;
-var lastUpdate = null;
+var circle = null;
+var playing = false;
 
 socket.on('connect', function(){
 	socket.emit('init', 1);
-
+    
 	socket.on('ID', function(data){
 		ID = data;
-        $("#startTracking_status").html("Welcome to <em>Voix des Anges</em> <strong>Client " + ID + "</strong> !");
-        startTracking();
-	});
-    
-    socket.on('updated', function(id){
-        if(lastUpdate == null)
-        {
-            startListening(id);
-            lastUpdate = 1;
-            socket.emit('log', [ID, "listening started"]);
-        }
 	});
 
 	socket.on('disconnect', function(){
-        
-        // Stop listening radio steam
-        myaudio = null;
-        
-        // Stop tracking the user
-        navigator.geolocation.clearWatch(watch_id);
-
-        // Save the tracking data
-        //window.localStorage.setItem(track_id, JSON.stringify(tracking_data));
-
-        // Reset watch_id and tracking_data 
-        watch_id = null;
-        //tracking_data = [];
-        
-        lastUpdate = null;
+        stopTracking();
+        stopListening();
 	});
 });
 
-document.addEventListener("deviceready", function(){
-	if(navigator.connection.type == Connection.NONE){
-        $("#startTracking_status").html("No Internet Access available !");
-	}
-});
+function onLoad() {
+    circle = new ProgressBar.Circle('#progress', {
+        color: '#555',
+        trailColor: '#eee',
+        strokeWidth: 10,
+        duration: 2500,
+        easing: 'easeInOut'
+    });
+    animatePlayer(false);
+}
 
-function send(x, y, z){
-	var arr = [ID, x, y, z];
+//document.addEventListener("deviceready", function(){
+//	if(navigator.connection.type == Connection.NONE){
+//        
+//	}
+//});
+
+function send(lat, lon){
+	var arr = [ID, lat, lon];
 	socket.emit('input', arr);
 }
 
@@ -68,42 +54,7 @@ function startTracking(){
     
     	// Success
         function(position){
-			if(lastKnownPos == null) // create map & marker
-			{
-				var myLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-				lastKnownPos = position;
-
-				// Google Map options
-				var myOptions = {
-					disableDefaultUI: true,
-					zoom: 15,
-					center: myLatLng,
-					mapTypeId: google.maps.MapTypeId.ROADMAP
-				};
-
-				// Create the Google Map, set options
-				liveMap = new google.maps.Map(document.getElementById("livemap_canvas"), myOptions);
-				marker = new google.maps.Marker({
-					position: myLatLng,
-					map: liveMap,
-					title: "Current Position"
-				});
-			}
-			else //update map
-			{
-				var myLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-				lastKnownPos = position;
-				
-				liveMap.panTo(myLatLng);
-				
-				marker.setPosition(myLatLng);
-				send(position.coords.latitude, position.coords.longitude, position.coords.altitude);
-			}
-			
-            //tracking_data.push(position);
-			$("#startTracking_info").html('Your last recorded position is :' + '<br />' + 'Latitude: ' + position.coords.latitude + '<br />' + 'Longitude: ' + position.coords.longitude + '<br />' + '<hr />');
-        
-		
+            send(position.coords.latitude, position.coords.longitude);
 		},
         
         // Error
@@ -119,55 +70,101 @@ function startTracking(){
 function startListening(id) {
     try {
         var port = 8000 + 2*id;
-        var url = audioAddress + ":" + port + "/stream";
+        var url = serverAddress + ":" + port + mountpoint;
         if(myaudio == null)
         {
-            myaudio = new Audio(url);
-            myaudio.autoplay = true;
-            myaudio.load();
-            myaudio.play();
+            reloadAudio(url);
         }
         else
         {
             if(myaudio.paused)
             {
-                myaudio.play();
+                myaudio.load();
             }
             else
             {
                 myaudio.pause();
                 myaudio = null;
-                myaudio = new Audio(url);
-                myaudio.autoplay = true;
-                myaudio.load();
-                myaudio.play();
+                animatePlayer(false);
             }
         }
-//        myaudio.addEventListener("canplay", function() {
-//            myaudio.play();
-//            $("#radio_status").html('Playing' + '<br />');
-//            var logAudio = ' ';
-//            for (property in myaudio) {
-//              logAudio += property + ':' + myaudio[property]+'\n';
-//            }
-//            socket.emit('log', [ID, "Audio: " + logAudio ]);
-//        });
     } catch (e) {
         alert('Audio error : ' + e);
         socket.emit('log', [ID, "Error in startListening: " + e]);
 	}
 }
 
-$("#home_radio_button").live('click', function(){
-    startListening(ID);
+$("#progress").live('click', function(){
+    if(ID != null)
+    {
+        if(watch_id == null)
+        {
+            startTracking();
+        }
+        else
+        {
+            stopTracking();
+        }
+        startListening(ID);
+    }
 });
 
-//$("#home_login_button").live('click', hello('facebook').login(loginHandler));
-//
-//function loginHandler(auth){
-//    hello(auth.network).api('me').then( function(json){
-//        alert("You are signed in to Facebook as " + json.name);
-//    }, function( e ){
-//        alert("Signin error: " + e.error.message );
-//    });
-//}
+function reloadAudio(url) {
+    myaudio = new Audio(url);
+    myaudio.autoplay = true;
+    myaudio.load();
+    myaudio.onplay = function(){animatePlayer(true);};
+    myaudio.oncanplay = function(){animatePlayer(false);};
+    myaudio.onstalled = function(){animatePlayer(false);};
+    myaudio.onpause = function(){animatePlayer(false);};
+    myaudio.onerror = function(){animatePlayer(false);};
+    myaudio.onratechange = function(){animatePlayer(false);};
+    myaudio.onsuspend = function(){animatePlayer(false);};
+    myaudio.onwaiting = function(){animatePlayer(false);};
+    myaudio.onended = function(){animatePlayer(false);};
+}
+
+function animatePlayer(state) {
+    if(playing && !state) // stop anim
+    {
+        playing = false;
+    }
+    else if(!playing && state) // start anim
+    {
+        playing = true;
+        animationLoop();
+    }
+}
+
+function animationLoop() {
+    setTimeout(function() {
+        if(playing)
+        {
+            circle.animate(Math.random());
+            animationLoop();
+        }
+        else
+        {
+            circle.animate(0);
+        }
+    }, 1000+(Math.random()*2000));
+}
+
+function stopTracking() {
+    // Stop tracking the user
+    navigator.geolocation.clearWatch(watch_id);
+
+    // Save the tracking data
+    //window.localStorage.setItem(track_id, JSON.stringify(tracking_data));
+
+    // Reset watch_id and tracking_data 
+    watch_id = null;
+    //tracking_data = [];
+}
+
+function stopListening() {
+    // Stop listening radio steam
+    myaudio = null;
+
+    animatePlayer(false);
+}
