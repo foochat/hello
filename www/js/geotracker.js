@@ -113,8 +113,10 @@ function reloadAudio(url) {
     myaudio = new Audio(url);
     myaudio.autoplay = true;
     myaudio.load();
-    myaudio.onplay = function(){animatePlayer(true);
-                               socket.emit('log',[ID, "onplay"]);};
+    myaudio.addEventListener('play', function(){animatePlayer(true);
+                               socket.emit('log',[ID, "onplay"]);});
+    //myaudio.onplay = function(){animatePlayer(true);
+    //                           socket.emit('log',[ID, "onplay"]);};
     myaudio.oncanplay = function(){animatePlayer(false);
                                   socket.emit('log',[ID, "oncanplay"]);};
     myaudio.onstalled = function(){animatePlayer(false);
