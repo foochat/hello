@@ -36,12 +36,6 @@ function onLoad() {
     animatePlayer(false);
 }
 
-//document.addEventListener("deviceready", function(){
-//	if(navigator.connection.type == Connection.NONE){
-//        
-//	}
-//});
-
 function send(lat, lon){
 	var arr = [ID, lat, lon];
 	socket.emit('input', arr);
@@ -114,12 +108,9 @@ function reloadAudio(url) {
     myaudio.autoplay = true;
     myaudio.load();
     myaudio.addEventListener('play', function(){animatePlayer(true);});
-    //myaudio.addEventListener('canplay', function(){animatePlayer(false);});
-    //myaudio.addEventListener('stalled', function(){animatePlayer(false);});
     myaudio.addEventListener('pause', function(){animatePlayer(false);});
     myaudio.addEventListener('error', function(){animatePlayer(false);});
     myaudio.addEventListener('suspend', function(){animatePlayer(false);});
-    //myaudio.addEventListener('waiting', function(){animatePlayer(false);});
     myaudio.addEventListener('ended', function(){animatePlayer(false);});
 }
 
