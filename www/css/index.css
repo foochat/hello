@@ -1,12 +1,52 @@
-.progress {
+#content {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 90%;
+    height: 90%;
+    z-index: -1;
+}
+
+#state {
+    position: relative;
+    opacity: 0.1;
+    margin-top: -60px;
+    margin-left: auto;
+    margin-right: auto;
+    content: url(../img/location-black.svg);
+    height: 40px;
+    width: auto;
+    z-index: 1;
+    -webkit-transition: opacity 0.5s ease-in; //for chrome, safari
+    -moz-transition: opacity 0.5s ease-in; //for mozilla firefox
+    -o-transition: opacity 0.5s ease-in; //for opera
+}
+
+#state.fade-in {
+    opacity: 1;
+}
+
+#state.fade-out {
+    opacity: 0.1;
+}
+
+#progress {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
     height: 80px;
     width: 80px;
-    margin: 50px auto;
+    display: block;
+    z-index: 2;
 }
-.progress > svg {
+
+#progress > svg {
     height: 100%;
     display: block;
 }
+
 @keyframes rotating {
   from {
     transform: rotate(0deg);
@@ -23,6 +63,7 @@
     -o-transform: rotate(360deg);
   }
 }
+
 @-webkit-keyframes rotating /* Safari and Chrome */ {
   from {
     transform: rotate(0deg);
@@ -39,6 +80,7 @@
     -o-transform: rotate(360deg);
   }
 }
+
 .rotating {
   -webkit-animation: rotating 2s linear infinite;
   -moz-animation: rotating 2s linear infinite;

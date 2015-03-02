@@ -4,7 +4,6 @@ var mountpoint = "/stream";
 
 var socket = new io.connect(serverAddress + ':' + serverPort + '/');
 
-var track_id = '';      // Name/ID of the exercise
 var watch_id = null;    // ID of the geolocation
 //var tracking_data = []; // Array containing GPS position objects
 var ID = null;
@@ -22,6 +21,7 @@ socket.on('connect', function(){
 	socket.on('disconnect', function(){
         stopTracking();
         stopListening();
+        ID = null;
 	});
 });
 
@@ -71,37 +71,32 @@ function startListening(id) {
         }
         else
         {
-            if(myaudio.paused)
-            {
-                myaudio.load();
-            }
-            else
-            {
-                myaudio.pause();
-                myaudio = null;
-                animatePlayer(false);
-            }
+            myaudio.pause();
+            myaudio = null;
         }
     } catch (e) {
-        alert('Audio error : ' + e);
         socket.emit('log', [ID, "Error in startListening: " + e]);
 	}
 }
 
-$("#progress").live('click', function(){
-    if(ID != null)
-    {
-        if(watch_id == null)
-        {
-            startTracking();
-        }
-        else
-        {
-            stopTracking();
-        }
-        startListening(ID);
-    }
-});
+function stopTracking() {
+    // Stop tracking the user
+    navigator.geolocation.clearWatch(watch_id);
+    
+    // Save the tracking data
+    //window.localStorage.setItem(track_id, JSON.stringify(tracking_data));
+
+    // Reset watch_id and tracking_data 
+    watch_id = null;
+    //tracking_data = [];
+}
+
+function stopListening() {
+    // Stop listening radio steam
+    myaudio = null;
+
+    animatePlayer(false);
+}
 
 function reloadAudio(url) {
     myaudio = new Audio(url);
@@ -109,8 +104,6 @@ function reloadAudio(url) {
     myaudio.load();
     myaudio.addEventListener('play', function(){animatePlayer(true);});
     myaudio.addEventListener('pause', function(){animatePlayer(false);});
-    myaudio.addEventListener('error', function(){animatePlayer(false);});
-    myaudio.addEventListener('suspend', function(){animatePlayer(false);});
     myaudio.addEventListener('ended', function(){animatePlayer(false);});
 }
 
@@ -118,10 +111,12 @@ function animatePlayer(state) {
     if(playing && !state) // stop anim
     {
         playing = false;
+        $('#state').attr('class', 'fade-out');
     }
     else if(!playing && state) // start anim
     {
         playing = true;
+        $('#state').attr('class', 'fade-in');
         animationLoop();
     }
 }
@@ -140,21 +135,17 @@ function animationLoop() {
     }, 1000+(Math.random()*2000));
 }
 
-function stopTracking() {
-    // Stop tracking the user
-    navigator.geolocation.clearWatch(watch_id);
-
-    // Save the tracking data
-    //window.localStorage.setItem(track_id, JSON.stringify(tracking_data));
-
-    // Reset watch_id and tracking_data 
-    watch_id = null;
-    //tracking_data = [];
-}
-
-function stopListening() {
-    // Stop listening radio steam
-    myaudio = null;
-
-    animatePlayer(false);
-}
+$("#progress").live('click', function(){
+    if(ID != null)
+    {
+        if(watch_id == null)
+        {
+            startTracking();
+        }
+        else
+        {
+            stopTracking();
+        }
+        startListening(ID);
+    }
+});
