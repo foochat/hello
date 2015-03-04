@@ -3,7 +3,7 @@
     margin-left: auto;
     margin-right: auto;
     top: 45%;
-    width: 95%;
+    width: 97%;
     height: 35%;
     z-index: -1;
 }
@@ -11,11 +11,11 @@
 #state {
     position: relative;
     opacity: 0.1;
-    margin-top: -120px;
+    margin-top: -240px;
     margin-left: auto;
     margin-right: auto;
     content: url(../img/location-black.svg);
-    height: 80px;
+    height: 160px;
     width: auto;
     z-index: 1;
     -webkit-transition: opacity 0.5s ease-in; //for chrome, safari
@@ -35,8 +35,8 @@
     position: relative;
     margin-left: auto;
     margin-right: auto;
-    height: 160px;
-    width: 160px;
+    height: 320px;
+    width: 320px;
     display: block;
     z-index: 2;
 }
