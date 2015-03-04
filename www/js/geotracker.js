@@ -4,8 +4,7 @@ var mountpoint = "/stream";
 
 var socket = new io.connect(serverAddress + ':' + serverPort + '/');
 
-var watch_id = null;    // ID of the geolocation
-//var tracking_data = []; // Array containing GPS position objects
+var watch_id = null;
 var ID = null;
 var myaudio = null;
 var circle = null;
@@ -42,7 +41,6 @@ function send(lat, lon){
 }
 
 function startTracking(){
-    
 	// Start tracking the User
     watch_id = navigator.geolocation.watchPosition(
     
@@ -82,13 +80,9 @@ function startListening(id) {
 function stopTracking() {
     // Stop tracking the user
     navigator.geolocation.clearWatch(watch_id);
-    
-    // Save the tracking data
-    //window.localStorage.setItem(track_id, JSON.stringify(tracking_data));
 
-    // Reset watch_id and tracking_data 
+    // Reset watch_id
     watch_id = null;
-    //tracking_data = [];
 }
 
 function stopListening() {
