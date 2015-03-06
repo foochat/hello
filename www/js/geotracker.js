@@ -1,5 +1,5 @@
 var serverAddress = 'http://193.190.210.15';
-var serverPort = 1234;
+var serverPort = 45678;
 var mountpoint = "/stream";
 
 var socket = new io.connect(serverAddress + ':' + serverPort + '/');
