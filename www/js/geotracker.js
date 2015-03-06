@@ -1,4 +1,4 @@
-var serverAddress = 'http://10.1.10.135';
+var serverAddress = 'http://193.190.210.15';
 var serverPort = 1234;
 var mountpoint = "/stream";
 
