@@ -1,8 +1,12 @@
-var serverAddress = 'http://193.190.210.15';
+//var serverIp = '193.190.210.15';
+var serverIp = '10.1.10.135';
 var serverPort = 45678;
-var mountpoint = "/stream";
 
-var socket = new io.connect(serverAddress + ':' + serverPort + '/');
+var clientStartingPort = 8000;
+var portStep = 2;
+var mountpoint = '/stream';
+
+var socket = new io.connect('http://' + serverIp + ':' + serverPort + '/');
 
 var watch_id = null;
 var ID = null;
@@ -61,8 +65,8 @@ function startTracking(){
 
 function startListening(id) {
     try {
-        var port = 8000 + 2*id;
-        var url = serverAddress + ":" + port + mountpoint;
+        var port = clientStartingPort + portStep*id;
+        var url = 'http://' + serverIp + ':' + port + mountpoint;
         if(myaudio == null)
         {
             reloadAudio(url);
