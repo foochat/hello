@@ -1,5 +1,5 @@
-//var serverIp = '193.190.210.15';
-var serverIp = '10.1.10.135';
+var serverIp = '193.190.210.15';
+//var serverIp = '10.1.10.135';
 var serverPort = 45678;
 
 var clientStartingPort = 8000;
