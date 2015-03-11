@@ -1,8 +1,8 @@
 var serverIp = '193.190.210.15';
 //var serverIp = '10.1.10.135';
-var serverPort = 8008;
+var serverPort = 8000;
 
-var clientStartingPort = 8000;
+var clientStartingPort = 8002;
 var portStep = 2;
 var mountpoint = '/stream';
 
@@ -65,8 +65,10 @@ function startTracking(){
 
 function startListening(id) {
     try {
-	var port = clientStartingPort;
-        var url = 'http://' + serverIp + ':' + port + mountpoint + id;
+	//var port = clientStartingPort;
+	var port = clientStartingPort + portStep*id;
+        //var url = 'http://' + serverIp + ':' + port + mountpoint + id;
+        var url = 'http://' + serverIp + ':' + port + mountpoint;
         if(myaudio == null)
         {
             reloadAudio(url);
