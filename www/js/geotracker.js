@@ -65,10 +65,10 @@ function startTracking(){
 
 function startListening(id) {
     try {
-	//var port = clientStartingPort;
-	var port = clientStartingPort + portStep*id;
-        //var url = 'http://' + serverIp + ':' + port + mountpoint + id;
-        var url = 'http://' + serverIp + ':' + port + mountpoint;
+	var port = clientStartingPort;
+	//var port = clientStartingPort + portStep*id;
+        var url = 'http://' + serverIp + ':' + port + mountpoint + id;
+        //var url = 'http://' + serverIp + ':' + port + mountpoint;
         if(myaudio == null)
         {
             reloadAudio(url);
