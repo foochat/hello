@@ -1,8 +1,8 @@
 var serverIp = '193.190.210.15';
 //var serverIp = '10.1.10.135';
-var serverPort = 8000;
+var serverPort = 8008;
 
-var clientStartingPort = 8002;
+var clientStartingPort = 8000;
 var portStep = 2;
 var mountpoint = '/stream';
 
