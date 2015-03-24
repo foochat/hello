@@ -9,15 +9,9 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <platform name="android">
-        <feature name="Geolocation">
-            <param name="android-package" value="org.apache.cordova.geolocation.GeoBroker" />
-        </feature>
-    </platform>
-    <platform name="ios">
-        <feature name="Geolocation">
-            <param name="ios-package" value="CDVLocation" />
-        </feature>
-    </platform>
+    <feature name="Geolocation">
+        <param name="android-package" value="org.apache.cordova.geolocation.GeoBroker" />
+        <param name="ios-package" value="CDVLocation" />
+    </feature>
     
 </widget>
