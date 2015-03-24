@@ -13,5 +13,11 @@
         <param name="android-package" value="org.apache.cordova.geolocation.GeoBroker" />
         <param name="ios-package" value="CDVLocation" />
     </feature>
+    <plugins>
+        <plugin name="Device" value="CDVDevice" />
+        <plugin name="Compass" value="CDVLocation" />
+        <plugin name="NetworkStatus" value="CDVConnection" />
+        <plugin name="Geolocation" value="CDVLocation" />
+    </plugins>
     
 </widget>
