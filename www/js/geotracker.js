@@ -28,6 +28,10 @@ socket.on('connect', function(){
 	});
 });
 
+document.addEventListener("deviceready", function(){
+     navigator.geolocation.getCurrentPosition(null, null, null);
+}, false);
+
 function onLoad() {
     circle = new ProgressBar.Circle('#progress', {
         color: '#555',
